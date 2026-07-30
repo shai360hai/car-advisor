@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>שי ססונקר — ליווי אישי ברכישת רכב</title>
+<meta name="description" content="ליווי בלתי תלוי ברכישת רכב יד שנייה: בדיקת רכב, בדיקת מסמכים ושעבודים, וניהול המשא ומתן מולכם. תשלמו נכון, לא יותר.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Suez+One&family=Assistant:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --concrete:#E7E8E3;
+  --concrete-dim:#DBDDD6;
+  --ink:#16191A;
+  --plate:#F2C300;
+  --pass:#1E5945;
+  --fail:#B23A2E;
+  --mute:#83887F;
+  --line:#C6C9C0;
+  --pad:clamp(20px,5vw,72px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--concrete);
+  color:var(--ink);
+  font-family:'Assistant',system-ui,sans-serif;
+  font-size:17px;line-height:1.65;font-weight:400;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.display{font-family:'Suez One',Georgia,serif;font-weight:400;line-height:1.1;letter-spacing:-.01em}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--pass);outline-offset:3px}
+
+/* ---------- plate motif ---------- */
+.plate{
+  display:inline-flex;align-items:center;gap:.5ch;
+  background:var(--plate);color:var(--ink);
+  border:2px solid var(--ink);border-radius:5px;
+  padding:.35em .7em;
+  font-family:'Suez One',serif;font-size:.95rem;
+  letter-spacing:.04em;
+  box-shadow:3px 3px 0 var(--ink);
+}
+
+/* ---------- nav ---------- */
+nav{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:14px var(--pad);
+  background:rgba(231,232,227,.9);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.brand{font-family:'Suez One',serif;font-size:1.05rem}
+.brand small{display:block;font-family:'Assistant';font-size:.7rem;font-weight:600;color:var(--mute);letter-spacing:.08em}
+.nav-tel{text-decoration:none;font-weight:800;font-size:.95rem;white-space:nowrap}
+
+/* ---------- layout ---------- */
+section{padding:clamp(56px,9vw,110px) var(--pad);border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-size:.72rem;font-weight:800;letter-spacing:.16em;
+  color:var(--pass);text-transform:uppercase;margin-bottom:14px;
+}
+.wrap{max-width:1180px;margin:0 auto}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:center;max-width:1180px;margin:0 auto}
+.hero h1{font-size:clamp(2.1rem,5.4vw,4rem)}
+.hero h1 em{font-style:normal;background:linear-gradient(transparent 62%,var(--plate) 62%)}
+.hero p.lead{font-size:clamp(1.05rem,2vw,1.25rem);margin-top:20px;max-width:42ch;color:#2C312E}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{
+  display:inline-block;text-decoration:none;font-weight:800;font-size:1rem;
+  padding:14px 26px;border-radius:6px;border:2px solid var(--ink);
+  transition:transform .15s ease,box-shadow .15s ease;
+}
+.btn-main{background:var(--ink);color:var(--concrete);box-shadow:4px 4px 0 var(--plate)}
+.btn-ghost{background:transparent}
+.btn:hover{transform:translate(2px,-2px)}
+.btn-main:hover{box-shadow:6px 6px 0 var(--plate)}
+
+/* ---------- signature: inspection report ---------- */
+.report{
+  background:#FBFBF8;border:2px solid var(--ink);border-radius:8px;
+  box-shadow:10px 10px 0 rgba(22,25,26,.09);
+  overflow:hidden;position:relative;
+}
+.report-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:16px 20px;border-bottom:2px solid var(--ink);background:var(--concrete-dim);
+}
+.report-head strong{font-family:'Suez One',serif;font-size:1rem}
+.report-head span{font-size:.72rem;font-weight:700;color:var(--mute);letter-spacing:.1em}
+.report ul{list-style:none;padding:8px 0}
+.report li{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 20px;font-size:.97rem;
+  border-bottom:1px dashed var(--line);
+  opacity:0;transform:translateX(14px);
+}
+.report li:last-child{border-bottom:0}
+.report li.in{animation:slot .45s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes slot{to{opacity:1;transform:translateX(0)}}
+.mark{
+  flex:0 0 26px;height:26px;border-radius:50%;
+  display:grid;place-items:center;font-size:.85rem;font-weight:800;
+  background:var(--pass);color:#fff;
+}
+.mark.x{background:var(--fail)}
+.report li span.label{flex:1}
+.report li em{font-style:normal;font-size:.8rem;color:var(--mute);font-weight:600}
+.verdict{
+  margin:6px 20px 20px;padding:14px 16px;
+  border:2px dashed var(--fail);border-radius:6px;
+  color:var(--fail);font-weight:800;font-size:.95rem;text-align:center;
+  opacity:0;
+}
+.verdict.in{animation:stamp .5s cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes stamp{
+  from{opacity:0;transform:scale(1.35) rotate(-4deg)}
+  to{opacity:1;transform:scale(1) rotate(-1.5deg)}
+}
+.report-note{font-size:.78rem;color:var(--mute);margin-top:12px;text-align:center}
+
+/* ---------- checks grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:2px;background:var(--line);border:1px solid var(--line);margin-top:36px}
+.cell{background:var(--concrete);padding:24px}
+.cell h3{font-size:1.05rem;margin-bottom:8px}
+.cell p{font-size:.92rem;color:#3A403B}
+
+/* ---------- pricing ---------- */
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:38px}
+.tier{
+  background:#FBFBF8;border:2px solid var(--ink);border-radius:8px;
+  padding:26px;display:flex;flex-direction:column;
+}
+.tier.featured{box-shadow:8px 8px 0 var(--plate)}
+.tier h3{font-size:1.35rem}
+.tier .price{font-family:'Suez One',serif;font-size:2.4rem;margin:14px 0 4px}
+.tier .price small{font-family:'Assistant';font-size:.85rem;font-weight:600;color:var(--mute)}
+.tier ul{list-style:none;margin:18px 0 24px;display:grid;gap:9px}
+.tier li{font-size:.93rem;padding-inline-start:22px;position:relative}
+.tier li::before{content:"✓";position:absolute;inset-inline-start:0;color:var(--pass);font-weight:800}
+.tier .btn{margin-top:auto;text-align:center}
+.tag{
+  display:inline-block;background:var(--plate);border:2px solid var(--ink);
+  font-size:.7rem;font-weight:800;letter-spacing:.08em;padding:3px 9px;border-radius:4px;margin-bottom:10px;
+}
+
+/* ---------- steps ---------- */
+.steps{counter-reset:s;display:grid;gap:0;margin-top:38px;max-width:760px}
+.step{
+  counter-increment:s;position:relative;
+  padding:22px 0 22px 0;padding-inline-start:72px;
+  border-bottom:1px solid var(--line);
+}
+.step:last-child{border-bottom:0}
+.step::before{
+  content:counter(s,decimal-leading-zero);
+  position:absolute;inset-inline-start:0;top:20px;
+  font-family:'Suez One',serif;font-size:1.5rem;color:var(--plate);
+  -webkit-text-stroke:1px var(--ink);
+}
+.step h3{font-size:1.1rem;margin-bottom:5px}
+.step p{font-size:.94rem;color:#3A403B}
+
+/* ---------- faq ---------- */
+details{border-bottom:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;font-weight:800;font-size:1.02rem;list-style:none;display:flex;justify-content:space-between;gap:14px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--pass);font-family:'Suez One',serif}
+details[open] summary::after{content:"–"}
+details p{margin-top:10px;font-size:.94rem;color:#3A403B;max-width:70ch}
+
+/* ---------- contact ---------- */
+.contact{background:var(--ink);color:var(--concrete);border-bottom:0}
+.contact h2{font-size:clamp(1.8rem,4vw,2.8rem)}
+.contact .eyebrow{color:var(--plate)}
+.contact p{color:#C9CCC5;margin-top:14px;max-width:52ch}
+.contact-links{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+.contact .btn{border-color:var(--concrete)}
+.contact .btn-main{background:var(--plate);color:var(--ink);border-color:var(--plate);box-shadow:4px 4px 0 rgba(231,232,227,.35)}
+.contact .btn-ghost{color:var(--concrete)}
+footer{padding:26px var(--pad);font-size:.8rem;color:var(--mute);text-align:center;background:var(--ink)}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr}
+  .report{order:-1}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .report li,.verdict{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">שי ססונקר<small>ליווי ברכישת רכב</small></div>
+  <a class="nav-tel" href="tel:0545366498">054-536-6498</a>
+</nav>
+
+<section style="padding-top:clamp(44px,7vw,86px)">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">ליווי בלתי תלוי · לא מוכר לכם רכב</div>
+      <h1>הרכב נראה מצוין.<br><em>גם הבא בתור.</em></h1>
+      <p class="lead">אני בודק את הרכב שאתם עומדים לקנות, את המסמכים שמאחוריו, ואת המחיר שביקשו עליו — לפני שאתם מעבירים כסף. בלי אינטרס במכירה, בלי עמלה מהמוכר.</p>
+      <div class="cta-row">
+        <a class="btn btn-main" href="#contact">דברו איתי על רכב ספציפי</a>
+        <a class="btn btn-ghost" href="#pricing">מחירים</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="report" id="report">
+        <div class="report-head">
+          <strong>דוח בדיקה לדוגמה</strong>
+          <span>יונדאי i20 · 2021</span>
+        </div>
+        <ul>
+          <li><span class="mark">✓</span><span class="label">מד אוץ מול שנתון</span><em>78,400 ק"מ</em></li>
+          <li><span class="mark">✓</span><span class="label">טסט בתוקף</span><em>04/2027</em></li>
+          <li><span class="mark">✓</span><span class="label">מבנה שלדה</span><em>תקין</em></li>
+          <li><span class="mark x">✗</span><span class="label">עבר תאונות</span><em>החלפת דלת אחורית</em></li>
+          <li><span class="mark x">✗</span><span class="label">שעבוד פתוח</span><em>לא הוסר</em></li>
+          <li><span class="mark">✓</span><span class="label">מספר בעלים</span><em>2</em></li>
+        </ul>
+        <div class="verdict" id="verdict">לא לחתום עד להסרת השעבוד · מרווח מיקוח: 6,000–8,000 ₪</div>
+      </div>
+      <p class="report-note">זה מה שאתם מקבלים ממני בסוף הבדיקה — בכתב, בשפה שאפשר להבין.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">מה בודקים</div>
+    <h2 style="font-size:clamp(1.7rem,4vw,2.6rem)">רוב ההפתעות היקרות<br>נמצאות במסמכים, לא במנוע</h2>
+    <div class="grid">
+      <div class="cell"><h3>שעבודים ועיקולים</h3><p>רכב עם שעבוד פתוח לא באמת עובר לבעלותכם. בדיקה מול משרד הרישוי לפני העברה.</p></div>
+      <div class="cell"><h3>עבר תאונות</h3><p>מה תוקן, כמה עמוק, והאם זה משפיע על הבטיחות או רק על המחיר.</p></div>
+      <div class="cell"><h3>קילומטראז' אמיתי</h3><p>הצלבה בין המד, היסטוריית הטיפולים, ומצב הבלאי בפועל.</p></div>
+      <div class="cell"><h3>היסטוריית טיפולים</h3><p>מוסך מורשה או חצר? מתי הוחלף רצועת תזמון, ומה נדחה שוב ושוב.</p></div>
+      <div class="cell"><h3>המחיר הנכון</h3><p>מחירון מול מצב בפועל. כמה באמת שווה הרכב הזה, לא הדגם הזה.</p></div>
+      <div class="cell"><h3>העסקה עצמה</h3><p>הסכם מכר, אופן התשלום, והעברת בעלות — בסדר הנכון.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="eyebrow">מחירים</div>
+    <h2 style="font-size:clamp(1.7rem,4vw,2.6rem)">מחיר קבוע מראש</h2>
+    <p style="margin-top:12px;max-width:50ch;color:#3A403B">בלי אחוזים ובלי הפתעות. אם אחרי הבדיקה אני אומר לכם לא לקנות — זה חלק מהשירות, לא כישלון שלו.</p>
+
+    <div class="tiers">
+      <div class="tier">
+        <h3>שיחת ייעוץ</h3>
+        <div class="price">₪290<br><small>שיחה של 45 דק'</small></div>
+        <ul>
+          <li>מיפוי צרכים ותקציב</li>
+          <li>2–3 דגמים שמתאימים לכם</li>
+          <li>מה לחפש ומה להימנע ממנו</li>
+          <li>סיכום בכתב אחרי השיחה</li>
+        </ul>
+        <a class="btn btn-ghost" href="#contact">לתיאום</a>
+      </div>
+
+      <div class="tier featured">
+        <span class="tag">הכי מבוקש</span>
+        <h3>בדיקת רכב</h3>
+        <div class="price">₪690<br><small>לרכב אחד</small></div>
+        <ul>
+          <li>ליווי לבדיקה במכון מורשה</li>
+          <li>בדיקת שעבודים ומסמכים</li>
+          <li>הצלבת ק"מ והיסטוריית טיפולים</li>
+          <li>דוח כתוב + הערכת שווי</li>
+          <li>אסטרטגיית מיקוח מוכנה</li>
+        </ul>
+        <a class="btn btn-main" href="#contact">לתיאום</a>
+      </div>
+
+      <div class="tier">
+        <h3>ליווי מלא</h3>
+        <div class="price">₪1,490<br><small>עד המפתחות ביד</small></div>
+        <ul>
+          <li>איתור וסינון רכבים עבורכם</li>
+          <li>עד 3 בדיקות רכב</li>
+          <li>ניהול המשא ומתן מולכם</li>
+          <li>ליווי בהסכם והעברת בעלות</li>
+          <li>זמינות בוואטסאפ לאורך התהליך</li>
+        </ul>
+        <a class="btn btn-ghost" href="#contact">לתיאום</a>
+      </div>
+    </div>
+    <p style="margin-top:22px;font-size:.85rem;color:var(--mute)">המחירים אינם כוללים את עלות הבדיקה במכון (כ־₪400–600, משולם ישירות למכון).</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">איך זה עובד</div>
+    <h2 style="font-size:clamp(1.7rem,4vw,2.6rem)">ארבעה שלבים</h2>
+    <div class="steps">
+      <div class="step"><h3>שיחה ראשונה</h3><p>מה אתם צריכים, כמה יש לכם, ומה כבר ראיתם. בלי עלות.</p></div>
+      <div class="step"><h3>סינון</h3><p>אני עובר על המודעות ומסמן מה שווה לראות ומה בזבוז זמן.</p></div>
+      <div class="step"><h3>בדיקה</h3><p>מכון מורשה, מסמכים, שעבודים. אתם מקבלים דוח כתוב ומספר: כמה זה שווה.</p></div>
+      <div class="step"><h3>סגירה</h3><p>מיקוח על בסיס הממצאים, הסכם מכר, והעברת בעלות בסדר הנכון.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap" style="max-width:820px">
+    <div class="eyebrow">שאלות</div>
+    <h2 style="font-size:clamp(1.7rem,4vw,2.6rem);margin-bottom:26px">מה שבדרך כלל שואלים</h2>
+    <details><summary>למה לא פשוט ללכת למכון בדיקה?</summary><p>מכון בודק את הרכב. הוא לא בודק שעבודים, לא מצליב את היסטוריית הטיפולים, לא אומר לכם כמה הרכב שווה, ולא מנהל עבורכם את המיקוח. הבדיקה במכון היא חלק מהתהליך — לא כולו.</p></details>
+    <details><summary>אתם מקבלים עמלה מהמוכר או מהסוכנות?</summary><p>לא. אני עובד רק מול הקונה ומשולם רק על ידו. זו כל הנקודה.</p></details>
+    <details><summary>מה אם אחרי כל הבדיקה החלטנו לא לקנות?</summary><p>מצוין. חיסכתם הרבה יותר ממה ששילמתם לי. בחבילת הליווי המלא ממשיכים לרכב הבא בלי תוספת.</p></details>
+    <details><summary>עובדים גם עם רכב חדש מיבואן?</summary><p>כן — שם הערך הוא בעיקר בהשוואת מחירים בפועל מול מחירון, בדיקת מבצעי מימון, והבנה של מה באמת כלול בחבילה.</p></details>
+    <details><summary>באיזה אזור אתם פועלים?</summary><p>חיפה והצפון פיזית. שיחות ייעוץ וסינון רכבים — בכל הארץ.</p></details>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="eyebrow">יצירת קשר</div>
+    <h2>ספרו לי על הרכב<br>שאתם שוקלים</h2>
+    <p>שלחו לי קישור למודעה בוואטסאפ. אני אומר לכם תוך כמה שעות אם זה שווה בדיקה — בלי עלות.</p>
+    <div class="contact-links">
+      <a class="btn btn-main" href="https://wa.me/972545366498" target="_blank" rel="noopener">וואטסאפ</a>
+      <a class="btn btn-ghost" href="tel:0545366498">054-536-6498</a>
+      <a class="btn btn-ghost" href="mailto:CHANGE-ME@example.com">אימייל</a>
+    </div>
+    <div style="margin-top:34px"><span class="plate">ליווי · לא מכירה</span></div>
+  </div>
+</section>
+
+<footer>© 2026 שי ססונקר · ליווי ברכישת רכב · חיפה והצפון</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var rows = document.querySelectorAll('#report li');
+  var verdict = document.getElementById('verdict');
+  if(reduce){
+    rows.forEach(function(r){r.style.opacity=1;r.style.transform='none';});
+    verdict.style.opacity=1;
+    return;
+  }
+  function run(){
+    rows.forEach(function(r,i){ setTimeout(function(){ r.classList.add('in'); }, 260 + i*230); });
+    setTimeout(function(){ verdict.classList.add('in'); }, 260 + rows.length*230 + 220);
+  }
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(e){
+      if(e[0].isIntersecting){ run(); io.disconnect(); }
+    },{threshold:.3});
+    io.observe(document.getElementById('report'));
+  } else { run(); }
+})();
+</script>
+</body>
+</html>
